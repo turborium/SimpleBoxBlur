@@ -73,7 +73,6 @@ function BoxBlur(const Source: TBitmap; const Size: Integer): TBitmap;
   end;
 
 var
-  Bitmap: TBitmap;
   Y: Integer;
   X: Integer;
   P: PPixel;
@@ -83,20 +82,20 @@ var
 begin
   Assert(Size > 0);
 
-  Bitmap := TBitmap.Create;
-  Bitmap.Assign(Source);
-  Bitmap.PixelFormat := pf32bit;// blue green red nope
+  Result := TBitmap.Create;
+  Result.Assign(Source);
+  Result.PixelFormat := pf32bit;// blue green red nope
 
-  Width := Bitmap.Width + 2;
-  Height := Bitmap.Height + 2;
+  Width := Result.Width + 2;
+  Height := Result.Height + 2;
 
   SetLength(SourcePixels, Width * Height);
   SetLength(BlurPixels, Width * Height);
 
-  for Y := 0 to Bitmap.Height - 1 do
+  for Y := 0 to Result.Height - 1 do
   begin
-    P := Bitmap.ScanLine[Y];
-    for X := 0 to Bitmap.Width - 1 do
+    P := Result.ScanLine[Y];
+    for X := 0 to Result.Width - 1 do
     begin
       SourcePixels[(Y + 1) * Width + (X + 1)] := P[X];
     end;
@@ -114,16 +113,14 @@ begin
     end;
   end;
 
-  for Y := 0 to Bitmap.Height - 1 do
+  for Y := 0 to Result.Height - 1 do
   begin
-    P := Bitmap.ScanLine[Y];
-    for X := 0 to Bitmap.Width - 1 do
+    P := Result.ScanLine[Y];
+    for X := 0 to Result.Width - 1 do
     begin
       P[X] := BlurPixels[(Y + 1) * Width + (X + 1)];
     end;
   end;
-
-  Exit(Bitmap);
 end;
 
 
